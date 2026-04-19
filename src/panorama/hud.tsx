@@ -226,6 +226,29 @@ function App(): React.ReactElement {
     };
   }, []);
 
+  // Camera follow: always keep local hero at visual center
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const tick = (): void => {
+      if (cancelled) return;
+
+      const playerId = Game.GetLocalPlayerID() as PlayerID;
+      const heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
+
+      if (heroIndex !== -1) {
+        const origin = Entities.GetAbsOrigin(heroIndex);
+        GameUI.SetCameraTargetPosition(origin, 0.03);
+      }
+
+      $.Schedule(1 / 60, tick);
+    };
+
+    tick();
+
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <Panel id="HudShell">
       {/* Hero Select Overlay */}
