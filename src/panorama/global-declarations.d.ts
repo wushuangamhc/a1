@@ -18,6 +18,20 @@ import {
 } from "react-panorama";
 
 declare global {
+  var CustomUIConfig: CustomUIConfig;
+
+  interface CustomUIConfig {
+    Camera: PanoramaCameraController;
+  }
+
+  interface PanoramaCameraController {
+    started: boolean;
+    cameraDistance: number;
+    Start(): void;
+    Stop(): void;
+    SetCameraDistance(distance: number): void;
+  }
+
   interface CustomGameEventDeclarations {
     oss_select_hero: { heroId: HeroId };
     oss_interact_pickup: { pickupId: string };

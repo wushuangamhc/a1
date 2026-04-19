@@ -41,11 +41,21 @@ function EndgameApp(): React.ReactElement {
   );
 }
 
-$.RegisterForUnhandledEvent("DOTAHudReady", () => {
+let hasMountedEndgame = false;
+
+function mountEndgame(): void {
+  if (hasMountedEndgame) {
+    return;
+  }
+
   const root = $("#EndgameRoot");
   if (!root) {
     return;
   }
 
+  hasMountedEndgame = true;
   render(<EndgameApp />, root);
-});
+}
+
+$.Schedule(0, mountEndgame);
+$.RegisterForUnhandledEvent("DOTAHudReady", mountEndgame);

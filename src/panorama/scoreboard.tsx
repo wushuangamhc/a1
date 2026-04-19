@@ -43,11 +43,21 @@ function ScoreboardApp(): React.ReactElement {
   );
 }
 
-$.RegisterForUnhandledEvent("DOTAHudReady", () => {
+let hasMountedScoreboard = false;
+
+function mountScoreboard(): void {
+  if (hasMountedScoreboard) {
+    return;
+  }
+
   const root = $("#ScoreboardRoot");
   if (!root) {
     return;
   }
 
+  hasMountedScoreboard = true;
   render(<ScoreboardApp />, root);
-});
+}
+
+$.Schedule(0, mountScoreboard);
+$.RegisterForUnhandledEvent("DOTAHudReady", mountScoreboard);

@@ -2,7 +2,10 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
+  devtool: false,
   entry: {
+    "manifest_scripts/init": "./src/panorama/manifest_scripts/init.ts",
+    "manifest_scripts/camera": "./src/panorama/manifest_scripts/camera.ts",
     hud: "./src/panorama/hud.tsx",
     scoreboard: "./src/panorama/scoreboard.tsx",
     endgame: "./src/panorama/endgame.tsx"

@@ -10,8 +10,6 @@ import {
   selectHero,
   useTeleport
 } from "@panorama/utils/net";
-import { startCameraFollow } from "@panorama/utils/camera";
-
 function useNetTableState<T>(reader: () => T | undefined, initial: T): T {
   const [value, setValue] = React.useState<T>(initial);
 
@@ -125,11 +123,6 @@ function App(): React.ReactElement {
   const [confirmed, setConfirmed] = React.useState(false);
   const [killFeed, setKillFeed] = React.useState<Array<{ attackerName: string; victimName: string; heroName: string }>>([]);
 
-  // Start camera auto-follow on HUD ready
-  React.useEffect(() => {
-    startCameraFollow();
-  }, []);
-
   const handleSelectHero = (heroId: HeroId): void => {
     setSelectedHero(heroId);
     setConfirmed(false);
@@ -140,6 +133,15 @@ function App(): React.ReactElement {
     setConfirmed(true);
     selectHero(selectedHero);
   };
+
+  React.useEffect(() => {
+    $.Msg("[A1 HUD] mount");
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_HEADER, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_PREGAME_STRATEGYUI, false);
+  }, []);
 
   // Listen for projectile fired events (client-side visual effect)
   React.useEffect(() => {
@@ -250,11 +252,26 @@ function App(): React.ReactElement {
   );
 }
 
-$.RegisterForUnhandledEvent("DOTAHudReady", () => {
-  const root = $("#HudRoot");
-  if (!root) {
+let hasMountedHud = false;
+
+function mountHud(): void {
+  $.Msg("[A1 HUD] mount attempt");
+
+  if (hasMountedHud) {
+    $.Msg("[A1 HUD] mount skipped because HUD is already mounted");
     return;
   }
 
+  const root = $("#HudRoot");
+  if (!root) {
+    $.Msg("[A1 HUD] mount waiting for #HudRoot");
+    return;
+  }
+
+  hasMountedHud = true;
+  $.Msg("[A1 HUD] mount success, rendering app");
   render(<App />, root);
-});
+}
+
+$.Schedule(0, mountHud);
+$.RegisterForUnhandledEvent("DOTAHudReady", mountHud);

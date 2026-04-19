@@ -1,6 +1,6 @@
 <root>
   <styles>
-    <include src="file://{resources}/styles/custom_game/endgame.css" />
+    <include src="file://{resources}/styles/endgame.css" />
   </styles>
   <scripts>
     <include src="file://{resources}/scripts/custom_game/endgame.js" />
