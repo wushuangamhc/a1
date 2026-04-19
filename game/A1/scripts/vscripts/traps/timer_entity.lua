@@ -1,8 +1,10 @@
-TimerManager = TimerManager or {}
-function TimerManager:Think()
-    -- Stub: no-op to prevent nil value errors.
+--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+local ____exports = {}
+local TimerManager = {Think = function()
+end}
+local function OnTimer()
+    TimerManager.Think()
 end
-
-function OnTimer()
-    TimerManager:Think()
-end
+_G.TimerManager = TimerManager
+_G.OnTimer = OnTimer
+return ____exports
