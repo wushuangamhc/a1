@@ -5,5 +5,7 @@
   <scripts>
     <include src="file://{resources}/scripts/custom_game/hud.js" />
   </scripts>
-  <Panel id="HudRoot" hittest="false" />
+  <Panel hittest="false">
+    <Panel id="HudRoot" hittest="false" />
+  </Panel>
 </root>

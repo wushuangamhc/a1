@@ -5,5 +5,7 @@
   <scripts>
     <include src="file://{resources}/scripts/custom_game/endgame.js" />
   </scripts>
-  <Panel id="EndgameRoot" hittest="false" />
+  <Panel hittest="false">
+    <Panel id="EndgameRoot" hittest="false" />
+  </Panel>
 </root>

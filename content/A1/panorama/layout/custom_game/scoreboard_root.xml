@@ -5,5 +5,7 @@
   <scripts>
     <include src="file://{resources}/scripts/custom_game/scoreboard.js" />
   </scripts>
-  <Panel id="ScoreboardRoot" hittest="false" />
+  <Panel hittest="false">
+    <Panel id="ScoreboardRoot" hittest="false" />
+  </Panel>
 </root>
