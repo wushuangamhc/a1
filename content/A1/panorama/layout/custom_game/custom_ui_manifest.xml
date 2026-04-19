@@ -1,0 +1,7 @@
+<root>
+  <Panel>
+    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_root.xml" />
+    <CustomUIElement type="EndScreen" layoutfile="file://{resources}/layout/custom_game/endgame_root.xml" />
+    <CustomUIElement type="FlyoutScoreboard" layoutfile="file://{resources}/layout/custom_game/scoreboard_root.xml" />
+  </Panel>
+</root>
