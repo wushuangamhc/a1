@@ -33,8 +33,7 @@ local function __TS__ClassExtends(target, base)
 end
 -- End of Lua Library inline imports
 local ____exports = {}
-local ____base_ability = require("abilities.base_ability")
-local AbilityBase = ____base_ability.AbilityBase
+local AbilityBase = CDOTA_Ability_Lua
 ____exports.ability_roller_shot = __TS__Class()
 local ability_roller_shot = ____exports.ability_roller_shot
 ability_roller_shot.name = "ability_roller_shot"

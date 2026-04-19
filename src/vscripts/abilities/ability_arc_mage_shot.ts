@@ -1,7 +1,8 @@
 import { FireProjectileRequest } from "@shared/types";
 import { OneShotGameMode } from "../game_mode";
-import { AbilityBase } from "./base_ability";
 
+
+const AbilityBase = CDOTA_Ability_Lua as any;
 export class ability_arc_mage_shot extends AbilityBase {
     OnSpellStart(): void {
         const self = (this as unknown) as CDOTA_Ability_Lua;
