@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-panorama";
-import { HERO_IDS, HeroId, MatchStateSnapshot, PlayerCombatState } from "@shared/types";
+import { HeroId, MatchStateSnapshot, PlayerCombatState } from "@shared/types";
 import { HERO_DEFINITIONS } from "@panorama/utils/hero_data";
 import {
   getLocalPlayerId,
@@ -66,7 +66,8 @@ function HeroSelectOverlay(props: {
         <Label id="HeroSelectSubtitle" text="每位英雄的投射手感各不相同" />
 
         <Panel id="HeroGrid">
-          {HERO_IDS.map((heroId) => {
+          {(() => {
+            const heroId: HeroId = "striker";
             const def = HERO_DEFINITIONS[heroId];
             const isSelected = selectedHero === heroId;
             return (
@@ -85,7 +86,7 @@ function HeroSelectOverlay(props: {
                 <Label className="HeroCardDesc" text={def.description} />
               </Panel>
             );
-          })}
+          })()}
         </Panel>
 
         <TextButton
@@ -225,15 +226,6 @@ function App(): React.ReactElement {
     };
   }, []);
 
-  const heroButtons = HERO_IDS.map((heroId: HeroId) => (
-    <TextButton
-      key={heroId}
-      className={`HeroButton ${playerState?.heroId === heroId ? "HeroButton--active" : ""}`}
-      onactivate={() => selectHero(heroId)}
-      text={heroId}
-    />
-  ));
-
   return (
     <Panel id="HudShell">
       {/* Hero Select Overlay */}
@@ -267,12 +259,6 @@ function App(): React.ReactElement {
         <Label text={`神符: ${playerState?.activeRuneId ?? "none"}`} />
         <Label text={`击杀 / 死亡: ${playerState?.kills ?? 0} / ${playerState?.deaths ?? 0}`} />
         <Label text={`护盾: ${playerState?.hasShield ? "就绪" : "无"}`} />
-      </Panel>
-
-      {/* Hero Select Card - debug */}
-      <Panel id="HeroSelectCard" style={{ visibility: "collapse" }}>
-        <Label className="CardHeading" text="英雄选择" />
-        <Panel className="ButtonRow">{heroButtons}</Panel>
       </Panel>
 
       {/* Action Card */}
