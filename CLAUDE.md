@@ -55,7 +55,3 @@ content/A1/panorama/         # 编译后的 JS/CSS（不手改）
 - Codeup：`git@codeup.aliyun.com:625e35b264c8a06be2d44ae9/ai_code/A1.git`
 - 两个 remote 都要 push
 
-## 当前状态（截至会话）
-- 5 位英雄已实现，使用原生 `ability_lua` + KV 系统
-- 英雄选择 UI 当前只显示虞姬（striker/风行者）
-- 待处理：2 个 Dota 2 运行时报错（内容待补充）
