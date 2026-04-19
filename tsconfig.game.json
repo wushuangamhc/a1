@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": [
+      "@moddota/dota-lua-types"
+    ],
+    "rootDir": ".",
+    "outDir": "addon/game/scripts/vscripts",
+    "lib": [
+      "ESNext"
+    ]
+  },
+  "include": [
+    "game/**/*.ts",
+    "shared/**/*.ts"
+  ],
+  "tstl": {
+    "luaTarget": "5.1",
+    "luaLibImport": "none",
+    "noHeader": false
+  }
+}

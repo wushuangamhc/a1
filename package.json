@@ -1,0 +1,25 @@
+{
+  "name": "1shot1kill-dota2-mod",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dota 2 custom game alpha scaffold for One Shot One Kill.",
+  "scripts": {
+    "build": "npm run build:game && npm run build:panorama",
+    "build:game": "tstl -p tsconfig.game.json",
+    "build:panorama": "webpack --config webpack.panorama.config.js",
+    "typecheck": "tsc -p tsconfig.game.json --noEmit && tsc -p tsconfig.panorama.json --noEmit"
+  },
+  "dependencies": {
+    "react": "^17.0.0",
+    "react-panorama": "^0.1.2"
+  },
+  "devDependencies": {
+    "@moddota/dota-lua-types": "^4.38.1",
+    "@moddota/panorama-types": "^1.39.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.8.3",
+    "typescript-to-lua": "^1.28.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}

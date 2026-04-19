@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "types": [
+      "@moddota/panorama-types"
+    ],
+    "rootDir": ".",
+    "outDir": "addon/content/panorama"
+  },
+  "include": [
+    "content/panorama/src/**/*.ts",
+    "content/panorama/src/**/*.tsx",
+    "shared/**/*.ts"
+  ]
+}
