@@ -3,19 +3,19 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: {
-    hud: "./content/panorama/src/hud.tsx",
-    scoreboard: "./content/panorama/src/scoreboard.tsx",
-    endgame: "./content/panorama/src/endgame.tsx"
+    hud: "./src/panorama/hud.tsx",
+    scoreboard: "./src/panorama/scoreboard.tsx",
+    endgame: "./src/panorama/endgame.tsx"
   },
   output: {
-    path: path.resolve(__dirname, "addon/content/panorama/scripts/custom_game"),
+    path: path.resolve(__dirname, "content/A1/panorama/scripts/custom_game"),
     filename: "[name].js"
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
       "@shared": path.resolve(__dirname, "shared"),
-      "@panorama": path.resolve(__dirname, "content/panorama/src")
+      "@panorama": path.resolve(__dirname, "src/panorama")
     }
   },
   module: {

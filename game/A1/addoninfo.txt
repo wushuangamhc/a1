@@ -1,6 +1,6 @@
 "AddonInfo"
 {
-	"addon_name"		"1shot1kill"
+	"addon_name"		"A1"
 	"addon_game_name"		"一击必杀"
 	"addon_title"		"One Shot One Kill"
 	"addon_version"		"0.1.0"

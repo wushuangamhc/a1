@@ -4,10 +4,9 @@
   "private": true,
   "description": "Dota 2 custom game alpha scaffold for One Shot One Kill.",
   "scripts": {
-    "build": "npm run build:game && npm run build:panorama && npm run copy:assets",
-    "build:game": "tstl -p tsconfig.game.json",
+    "build": "npm run build:game && npm run build:panorama",
+    "build:game": "tstl -p tsconfig.game.json && node scripts/post-build.js",
     "build:panorama": "webpack --config webpack.panorama.config.js",
-    "copy:assets": "cp -r content/panorama/layout/* addon/content/panorama/layout/ && cp -r content/panorama/styles/* addon/content/panorama/styles/",
     "typecheck": "tsc -p tsconfig.game.json --noEmit && tsc -p tsconfig.panorama.json --noEmit"
   },
   "dependencies": {

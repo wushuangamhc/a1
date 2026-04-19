@@ -1,9 +1,0 @@
-<root>
-  <styles>
-    <include src="file://{resources}/styles/custom_game/endgame.css" />
-  </styles>
-  <scripts>
-    <include src="file://{resources}/scripts/custom_game/endgame.js" />
-  </scripts>
-  <Panel id="EndgameRoot" hittest="false" />
-</root>

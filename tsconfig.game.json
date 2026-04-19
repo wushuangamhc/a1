@@ -4,14 +4,13 @@
     "types": [
       "@moddota/dota-lua-types"
     ],
-    "rootDir": ".",
-    "outDir": "addon/game/scripts/vscripts",
+    "outDir": "game/A1/scripts/vscripts",
     "lib": [
       "ESNext"
     ]
   },
   "include": [
-    "game/**/*.ts",
+    "src/vscripts/**/*.ts",
     "shared/**/*.ts",
     "node_modules/@moddota/dota-lua-types/normalized.d.ts"
   ],

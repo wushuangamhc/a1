@@ -13,10 +13,10 @@
         "shared/*"
       ],
       "@game/*": [
-        "game/*"
+        "src/vscripts/*"
       ],
       "@panorama/*": [
-        "content/panorama/src/*"
+        "src/panorama/*"
       ]
     }
   }

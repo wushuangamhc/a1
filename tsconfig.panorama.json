@@ -6,12 +6,13 @@
     "types": [
       "@moddota/panorama-types"
     ],
-    "rootDir": ".",
-    "outDir": "addon/content/panorama"
+    "lib": [
+      "ESNext"
+    ]
   },
   "include": [
-    "content/panorama/src/**/*.ts",
-    "content/panorama/src/**/*.tsx",
+    "src/panorama/**/*.ts",
+    "src/panorama/**/*.tsx",
     "shared/**/*.ts"
   ]
 }

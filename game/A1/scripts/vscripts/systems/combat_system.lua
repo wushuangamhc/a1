@@ -2,12 +2,12 @@
 local ____exports = {}
 local ____config = require("shared.config")
 local EVENT_NAMES = ____config.EVENT_NAMES
-local ____hero_definitions = require("game.hero_definitions")
+local ____hero_definitions = require("hero_definitions")
 local HERO_DEFINITIONS = ____hero_definitions.HERO_DEFINITIONS
-local ____net_tables = require("game.net_tables")
+local ____net_tables = require("net_tables")
 local syncPlayerState = ____net_tables.syncPlayerState
 local syncScoreboard = ____net_tables.syncScoreboard
-local ____time = require("game.lib.time")
+local ____time = require("lib.time")
 local now = ____time.now
 local schedule = ____time.schedule
 ____exports.CombatSystem = __TS__Class()
