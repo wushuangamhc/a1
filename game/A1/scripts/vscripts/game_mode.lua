@@ -294,13 +294,7 @@ function OneShotGameMode.prototype.____constructor(self)
     self.defaultMode = "ffa"
     self.confirmedHeroSelection = __TS__New(Set)
     self.gameStarted = false
-    self.HERO_OVERRIDES = {
-        striker = "npc_dota_hero_striker",
-        deadeye = "npc_dota_hero_deadeye",
-        boomerang = "npc_dota_hero_boomerang",
-        arc_mage = "npc_dota_hero_arc_mage",
-        roller = "npc_dota_hero_roller"
-    }
+    self.HERO_OVERRIDES = {windrunner = "npc_dota_hero_windrunner", sniper = "npc_dota_hero_sniper"}
 end
 function OneShotGameMode.prototype.init(self)
     GameRules:SetHeroRespawnEnabled(false)
@@ -417,6 +411,7 @@ function OneShotGameMode.prototype.onNpcSpawned(self, event)
         unit:GetTeam()
     )
     self:applyHeroPrototype(unit, playerState.heroId)
+    PlayerResource:SetCameraTarget(playerId, unit)
     unit:SetBaseMaxHealth(1)
     unit:SetMaxHealth(1)
     unit:SetHealth(1)

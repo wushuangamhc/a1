@@ -14,10 +14,10 @@ export interface HeroDefinition {
   convergeRadius?: number;
 }
 
-export const HERO_IDS = ["striker", "deadeye", "boomerang", "arc_mage", "roller"] as const;
+export const HERO_IDS = ["windrunner", "sniper"] as const;
 export type HeroId = (typeof HERO_IDS)[number];
 
-export const PROJECTILE_TYPES = ["instant_line", "charged_line", "returning_line", "converging_arc", "roll_shot"] as const;
+export const PROJECTILE_TYPES = ["instant_line", "charged_line"] as const;
 export type ProjectileType = (typeof PROJECTILE_TYPES)[number];
 
 export const BLESSING_IDS = ["none", "shield", "multishot", "swiftness"] as const;

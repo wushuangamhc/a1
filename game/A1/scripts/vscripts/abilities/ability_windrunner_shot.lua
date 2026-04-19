@@ -34,11 +34,11 @@ end
 -- End of Lua Library inline imports
 local ____exports = {}
 local AbilityBase = CDOTA_Ability_Lua
-____exports.ability_arc_mage_shot = __TS__Class()
-local ability_arc_mage_shot = ____exports.ability_arc_mage_shot
-ability_arc_mage_shot.name = "ability_arc_mage_shot"
-__TS__ClassExtends(ability_arc_mage_shot, AbilityBase)
-function ability_arc_mage_shot.prototype.OnSpellStart(self)
+____exports.ability_windrunner_shot = __TS__Class()
+local ability_windrunner_shot = ____exports.ability_windrunner_shot
+ability_windrunner_shot.name = "ability_windrunner_shot"
+__TS__ClassExtends(ability_windrunner_shot, AbilityBase)
+function ability_windrunner_shot.prototype.OnSpellStart(self)
     local ____self = self
     local caster = ____self:GetCaster()
     local playerId = caster:GetPlayerOwnerID()
@@ -50,7 +50,7 @@ function ability_arc_mage_shot.prototype.OnSpellStart(self)
     local gameMode = GameRules.OneShotGameMode
     gameMode.combat:handleFire(playerId, payload)
 end
-function ability_arc_mage_shot.prototype.GetCastRange(self, location, target)
-    return 1200
+function ability_windrunner_shot.prototype.GetCastRange(self, location, target)
+    return 1100
 end
 return ____exports

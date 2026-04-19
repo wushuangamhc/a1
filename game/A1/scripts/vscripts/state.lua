@@ -428,7 +428,7 @@ function RuntimeState.prototype.ensurePlayer(self, playerId, teamId)
     end
     local created = {
         playerId = playerId,
-        heroId = "striker",
+        heroId = "windrunner",
         blessingId = "none",
         activeRuneId = "none",
         kills = 0,

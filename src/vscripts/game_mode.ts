@@ -18,11 +18,8 @@ export class OneShotGameMode {
   private gameStarted = false;
 
   private readonly HERO_OVERRIDES: Record<HeroId, string> = {
-    striker: "npc_dota_hero_striker",
-    deadeye: "npc_dota_hero_deadeye",
-    boomerang: "npc_dota_hero_boomerang",
-    arc_mage: "npc_dota_hero_arc_mage",
-    roller: "npc_dota_hero_roller",
+    windrunner: "npc_dota_hero_windrunner",
+    sniper: "npc_dota_hero_sniper",
   };
 
   init(): void {
@@ -121,6 +118,10 @@ export class OneShotGameMode {
 
     const playerState = this.state.ensurePlayer(playerId, unit.GetTeam());
     this.applyHeroPrototype(unit, playerState.heroId);
+
+    // Camera auto-follow: lock camera to local hero (Dota engine handles map borders)
+    PlayerResource.SetCameraTarget(playerId, unit);
+
     unit.SetBaseMaxHealth(1);
     unit.SetMaxHealth(1);
     unit.SetHealth(1);

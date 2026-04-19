@@ -1,9 +1,9 @@
 "DOTAAbilities"
 {
-    "ability_striker_shot"
+    "ability_windrunner_shot"
     {
         "BaseClass"                     "ability_lua"
-        "ScriptFile"                    "abilities/ability_striker_shot"
+        "ScriptFile"                    "abilities/ability_windrunner_shot"
         "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
         "AbilityUnitTargetTeam"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
         "AbilityUnitTargetType"         "DOTA_UNIT_TARGET_HERO"
@@ -14,10 +14,10 @@
         "MaxLevel"                      "1"
     }
 
-    "ability_deadeye_shot"
+    "ability_sniper_shot"
     {
         "BaseClass"                     "ability_lua"
-        "ScriptFile"                    "abilities/ability_deadeye_shot"
+        "ScriptFile"                    "abilities/ability_sniper_shot"
         "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
         "AbilityUnitTargetTeam"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
         "AbilityUnitTargetType"         "DOTA_UNIT_TARGET_HERO"
@@ -29,45 +29,4 @@
         "MaxLevel"                      "1"
     }
 
-    "ability_boomerang_shot"
-    {
-        "BaseClass"                     "ability_lua"
-        "ScriptFile"                    "abilities/ability_boomerang_shot"
-        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-        "AbilityUnitTargetTeam"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
-        "AbilityUnitTargetType"         "DOTA_UNIT_TARGET_HERO"
-        "AbilityCastPoint"              "0.0"
-        "AbilityCooldown"               "1.0"
-        "AbilityManaCost"               "0"
-        "AbilityCastRange"              "900"
-        "MaxLevel"                      "1"
-    }
-
-    "ability_arc_mage_shot"
-    {
-        "BaseClass"                     "ability_lua"
-        "ScriptFile"                    "abilities/ability_arc_mage_shot"
-        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-        "AbilityUnitTargetTeam"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
-        "AbilityUnitTargetType"         "DOTA_UNIT_TARGET_HERO"
-        "AbilityCastPoint"              "0.0"
-        "AbilityCooldown"               "1.1"
-        "AbilityManaCost"               "0"
-        "AbilityCastRange"              "1200"
-        "MaxLevel"                      "1"
-    }
-
-    "ability_roller_shot"
-    {
-        "BaseClass"                     "ability_lua"
-        "ScriptFile"                    "abilities/ability_roller_shot"
-        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-        "AbilityUnitTargetTeam"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
-        "AbilityUnitTargetType"         "DOTA_UNIT_TARGET_HERO"
-        "AbilityCastPoint"              "0.0"
-        "AbilityCooldown"               "0.9"
-        "AbilityManaCost"               "0"
-        "AbilityCastRange"              "1000"
-        "MaxLevel"                      "1"
-    }
 }

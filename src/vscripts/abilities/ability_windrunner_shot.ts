@@ -3,7 +3,7 @@ import { OneShotGameMode } from "../game_mode";
 
 
 const AbilityBase = CDOTA_Ability_Lua as any;
-export class ability_roller_shot extends AbilityBase {
+export class ability_windrunner_shot extends AbilityBase {
     OnSpellStart(): void {
         const self = (this as unknown) as CDOTA_Ability_Lua;
         const caster = self.GetCaster();
@@ -25,6 +25,6 @@ export class ability_roller_shot extends AbilityBase {
     }
 
     GetCastRange(location: Vector, target: CDOTA_BaseNPC | undefined): number {
-        return 1000;
+        return 1100;
     }
 }

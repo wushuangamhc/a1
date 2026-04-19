@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-panorama";
-import { HeroId, MatchStateSnapshot, PlayerCombatState } from "@shared/types";
+import { HeroId, HERO_IDS, MatchStateSnapshot, PlayerCombatState } from "@shared/types";
 import { HERO_DEFINITIONS } from "@panorama/utils/hero_data";
 import {
   getLocalPlayerId,
@@ -66,8 +66,7 @@ function HeroSelectOverlay(props: {
         <Label id="HeroSelectSubtitle" text="每位英雄的投射手感各不相同" />
 
         <Panel id="HeroGrid">
-          {(() => {
-            const heroId: HeroId = "striker";
+          {HERO_IDS.map((heroId) => {
             const def = HERO_DEFINITIONS[heroId];
             const isSelected = selectedHero === heroId;
             return (
@@ -86,7 +85,7 @@ function HeroSelectOverlay(props: {
                 <Label className="HeroCardDesc" text={def.description} />
               </Panel>
             );
-          })()}
+          })}
         </Panel>
 
         <TextButton
@@ -142,35 +141,6 @@ function App(): React.ReactElement {
       const origin = [event.origin_x, event.origin_y, event.origin_z];
       const target = [event.target_x, event.target_y, event.target_z];
 
-      if (event.projectile_type === "converging_arc") {
-        const ox = event.origin_x;
-        const oy = event.origin_y;
-        const tx = event.target_x;
-        const ty = event.target_y;
-        const dx = tx - ox;
-        const dy = ty - oy;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        const nx = (-dy / dist) * 80;
-        const ny = (dx / dist) * 80;
-        const leftOrigin = [ox + nx, oy + ny, event.origin_z];
-        const rightOrigin = [ox - nx, oy - ny, event.origin_z];
-
-        [leftOrigin, rightOrigin].forEach((o) => {
-          const particleId = Particles.CreateParticle(
-            "particles/ui_mouseactions/range_finder_cone.vpcf",
-            ParticleAttachment_t.PATTACH_WORLDORIGIN,
-            undefined as any
-          );
-          Particles.SetParticleControl(particleId, 0, o as [number, number, number]);
-          Particles.SetParticleControl(particleId, 1, target as [number, number, number]);
-          Particles.SetParticleControl(particleId, 2, [255, 100, 200]);
-          $.Schedule(0.2, () => {
-            Particles.DestroyParticleEffect(particleId, true);
-          });
-        });
-        return;
-      }
-
       // Create a simple particle line effect
       const particleId = Particles.CreateParticle(
         "particles/ui_mouseactions/range_finder_cone.vpcf",
@@ -224,29 +194,6 @@ function App(): React.ReactElement {
         GameEvents.Unsubscribe(listener);
       }
     };
-  }, []);
-
-  // Camera follow: always keep local hero at visual center
-  React.useEffect(() => {
-    let cancelled = false;
-
-    const tick = (): void => {
-      if (cancelled) return;
-
-      const playerId = Game.GetLocalPlayerID() as PlayerID;
-      const heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
-
-      if (heroIndex !== -1) {
-        const origin = Entities.GetAbsOrigin(heroIndex);
-        GameUI.SetCameraTargetPosition(origin, 0.03);
-      }
-
-      $.Schedule(1 / 60, tick);
-    };
-
-    tick();
-
-    return () => { cancelled = true; };
   }, []);
 
   return (

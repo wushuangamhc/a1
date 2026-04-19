@@ -3,7 +3,7 @@ import { OneShotGameMode } from "../game_mode";
 
 
 const AbilityBase = CDOTA_Ability_Lua as any;
-export class ability_boomerang_shot extends AbilityBase {
+export class ability_sniper_shot extends AbilityBase {
     OnSpellStart(): void {
         const self = (this as unknown) as CDOTA_Ability_Lua;
         const caster = self.GetCaster();
@@ -17,7 +17,7 @@ export class ability_boomerang_shot extends AbilityBase {
             targetX: target.x,
             targetY: target.y,
             targetZ: target.z,
-            chargePct: 0
+            chargePct: 1
         };
 
         const gameMode = (GameRules as any).OneShotGameMode as OneShotGameMode;
@@ -25,6 +25,6 @@ export class ability_boomerang_shot extends AbilityBase {
     }
 
     GetCastRange(location: Vector, target: CDOTA_BaseNPC | undefined): number {
-        return 900;
+        return 1350;
     }
 }

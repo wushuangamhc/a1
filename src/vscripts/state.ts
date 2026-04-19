@@ -19,7 +19,7 @@ export class RuntimeState {
 
     const created: PlayerCombatState = {
       playerId,
-      heroId: "striker",
+      heroId: "windrunner",
       blessingId: "none",
       activeRuneId: "none",
       kills: 0,

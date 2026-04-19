@@ -17,7 +17,6 @@ local syncPlayerState = ____net_tables.syncPlayerState
 local syncScoreboard = ____net_tables.syncScoreboard
 local ____time = require("lib.time")
 local now = ____time.now
-local schedule = ____time.schedule
 ____exports.CombatSystem = __TS__Class()
 local CombatSystem = ____exports.CombatSystem
 CombatSystem.name = "CombatSystem"
@@ -56,34 +55,12 @@ function CombatSystem.prototype.handleFire(self, playerId, payload)
         target = {x = payload.targetX, y = payload.targetY, z = payload.targetZ}
     }
     CustomGameEventManager:Send_ServerToAllClients(EVENT_NAMES.projectileFired, firedEvent)
-    if heroDefinition.projectileType == "converging_arc" then
-        local targetPoint = Vector(payload.targetX, payload.targetY, payload.targetZ)
-        local distance = (origin - targetPoint):Length()
-        local speed = 1600
-        local delay = distance / speed
-        local radius = heroDefinition.convergeRadius or 150
-        schedule(
-            nil,
-            delay,
-            function()
-                self:resolveConvergingArcHit(playerId, targetPoint, radius)
-            end
-        )
-        return
-    end
-    local fireOrigin = origin
-    if heroDefinition.projectileType == "roll_shot" then
-        local rollDistance = 300
-        local rollDestination = origin + direction * rollDistance
-        FindClearSpaceForUnit(hero, rollDestination, true)
-        fireOrigin = hero:GetAbsOrigin()
-    end
     local shots = player.multishotCount
     do
         local shotIndex = 0
         while shotIndex < shots do
             local sideOffset = shots > 1 and (shotIndex == 0 and -48 or 48) or 0
-            local adjustedOrigin = fireOrigin + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0)
+            local adjustedOrigin = origin + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0)
             self:resolveLineHit(
                 playerId,
                 adjustedOrigin,
@@ -91,22 +68,6 @@ function CombatSystem.prototype.handleFire(self, playerId, payload)
                 range,
                 heroDefinition.projectileWidth
             )
-            if heroDefinition.projectileType == "returning_line" then
-                local returnWidth = heroDefinition.projectileWidth * (heroDefinition.returnWidthMultiplier or 1)
-                schedule(
-                    nil,
-                    0.25,
-                    function()
-                        self:resolveLineHit(
-                            playerId,
-                            adjustedOrigin + direction * range,
-                            direction * -1,
-                            range,
-                            returnWidth
-                        )
-                    end
-                )
-            end
             shotIndex = shotIndex + 1
         end
     end
@@ -170,28 +131,5 @@ function CombatSystem.prototype.resolveLineHit(self, attackerId, origin, directi
         return
     end
     self:registerKill(attackerId, victimId, HERO_DEFINITIONS[player.heroId].projectileType)
-end
-function CombatSystem.prototype.resolveConvergingArcHit(self, attackerId, targetPoint, radius)
-    local attackerTeam = PlayerResource:GetTeam(attackerId)
-    local enemies = FindUnitsInRadius(
-        attackerTeam,
-        targetPoint,
-        nil,
-        radius,
-        2,
-        1,
-        128 + 256,
-        0,
-        false
-    )
-    local victim = enemies[1]
-    if not victim then
-        return
-    end
-    local victimId = victim:GetPlayerOwnerID()
-    if victimId == nil or victimId < 0 then
-        return
-    end
-    self:registerKill(attackerId, victimId, "converging_arc")
 end
 return ____exports

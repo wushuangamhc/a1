@@ -34,11 +34,11 @@ end
 -- End of Lua Library inline imports
 local ____exports = {}
 local AbilityBase = CDOTA_Ability_Lua
-____exports.ability_roller_shot = __TS__Class()
-local ability_roller_shot = ____exports.ability_roller_shot
-ability_roller_shot.name = "ability_roller_shot"
-__TS__ClassExtends(ability_roller_shot, AbilityBase)
-function ability_roller_shot.prototype.OnSpellStart(self)
+____exports.ability_sniper_shot = __TS__Class()
+local ability_sniper_shot = ____exports.ability_sniper_shot
+ability_sniper_shot.name = "ability_sniper_shot"
+__TS__ClassExtends(ability_sniper_shot, AbilityBase)
+function ability_sniper_shot.prototype.OnSpellStart(self)
     local ____self = self
     local caster = ____self:GetCaster()
     local playerId = caster:GetPlayerOwnerID()
@@ -46,11 +46,11 @@ function ability_roller_shot.prototype.OnSpellStart(self)
         return
     end
     local target = ____self:GetCursorPosition()
-    local payload = {targetX = target.x, targetY = target.y, targetZ = target.z, chargePct = 0}
+    local payload = {targetX = target.x, targetY = target.y, targetZ = target.z, chargePct = 1}
     local gameMode = GameRules.OneShotGameMode
     gameMode.combat:handleFire(playerId, payload)
 end
-function ability_roller_shot.prototype.GetCastRange(self, location, target)
-    return 1000
+function ability_sniper_shot.prototype.GetCastRange(self, location, target)
+    return 1350
 end
 return ____exports
