@@ -9,13 +9,21 @@ import { CombatSystem } from "@game/systems/combat_system";
 import { MapSystem } from "@game/systems/map_system";
 
 export class OneShotGameMode {
-  private readonly state = new RuntimeState();
+  public readonly state = new RuntimeState();
   private readonly pickups = new PickupSystem(this.state);
-  private readonly combat = new CombatSystem(this.state, this.pickups);
+  public readonly combat = new CombatSystem(this.state, this.pickups);
   private readonly map = new MapSystem(this.state);
   private readonly defaultMode: MatchMode = "ffa";
   private readonly confirmedHeroSelection = new Set<PlayerID>();
   private gameStarted = false;
+
+  private readonly HERO_OVERRIDES: Record<HeroId, string> = {
+    striker: "npc_dota_hero_striker",
+    deadeye: "npc_dota_hero_deadeye",
+    boomerang: "npc_dota_hero_boomerang",
+    arc_mage: "npc_dota_hero_arc_mage",
+    roller: "npc_dota_hero_roller",
+  };
 
   init(): void {
     GameRules.SetHeroRespawnEnabled(false);
@@ -34,10 +42,6 @@ export class OneShotGameMode {
     ListenToGameEvent("entity_killed", (event) => this.onEntityKilled(event), undefined);
 
     CustomGameEventManager.RegisterListener(EVENT_NAMES.selectHero, (_, payload) => this.onHeroSelected(payload));
-    CustomGameEventManager.RegisterListener(EVENT_NAMES.fireProjectile, (_, payload) => {
-      const playerId = payload.PlayerID as PlayerID;
-      this.combat.handleFire(playerId, payload);
-    });
     CustomGameEventManager.RegisterListener(EVENT_NAMES.interactPickup, (_, payload) => {
       const playerId = payload.PlayerID as PlayerID;
       this.pickups.handleInteract(playerId, payload);
@@ -154,15 +158,17 @@ export class OneShotGameMode {
     }
 
     const playerId = payload.PlayerID;
-    const hero = PlayerResource.GetSelectedHeroEntity(playerId);
+    const heroId = payload.heroId;
     const team = PlayerResource.GetTeam(playerId);
     const playerState = this.state.ensurePlayer(playerId, team);
-    playerState.heroId = payload.heroId;
+    playerState.heroId = heroId;
     this.confirmedHeroSelection.add(playerId);
     syncPlayerState(this.state, playerId);
 
-    if (hero) {
-      this.applyHeroPrototype(hero, payload.heroId);
+    // Replace hero with override hero that has native KV abilities
+    const overrideName = this.HERO_OVERRIDES[heroId];
+    if (overrideName !== undefined && overrideName !== "") {
+      PlayerResource.ReplaceHeroWith(playerId, overrideName, 0, 0);
     }
   }
 

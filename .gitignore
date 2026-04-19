@@ -7,3 +7,7 @@ build/
 Thumbs.db
 
 .triadevent.log
+
+# Dota 2 Workshop Tools cache
+game/*/tools_thumbnail_cache*
+game/*/tools_asset_info.bin

@@ -32,6 +32,13 @@ function OneShotGameMode.prototype.____constructor(self)
     self.defaultMode = "ffa"
     self.confirmedHeroSelection = __TS__New(Set)
     self.gameStarted = false
+    self.HERO_OVERRIDES = {
+        striker = "npc_dota_hero_striker",
+        deadeye = "npc_dota_hero_deadeye",
+        boomerang = "npc_dota_hero_boomerang",
+        arc_mage = "npc_dota_hero_arc_mage",
+        roller = "npc_dota_hero_roller"
+    }
 end
 function OneShotGameMode.prototype.init(self)
     GameRules:SetHeroRespawnEnabled(false)
@@ -65,13 +72,6 @@ function OneShotGameMode.prototype.init(self)
     CustomGameEventManager:RegisterListener(
         EVENT_NAMES.selectHero,
         function(_, payload) return self:onHeroSelected(payload) end
-    )
-    CustomGameEventManager:RegisterListener(
-        EVENT_NAMES.fireProjectile,
-        function(_, payload)
-            local playerId = payload.PlayerID
-            self.combat:handleFire(playerId, payload)
-        end
     )
     CustomGameEventManager:RegisterListener(
         EVENT_NAMES.interactPickup,
@@ -186,14 +186,15 @@ function OneShotGameMode.prototype.onHeroSelected(self, payload)
         return
     end
     local playerId = payload.PlayerID
-    local hero = PlayerResource:GetSelectedHeroEntity(playerId)
+    local heroId = payload.heroId
     local team = PlayerResource:GetTeam(playerId)
     local playerState = self.state:ensurePlayer(playerId, team)
-    playerState.heroId = payload.heroId
+    playerState.heroId = heroId
     self.confirmedHeroSelection:add(playerId)
     syncPlayerState(nil, self.state, playerId)
-    if hero then
-        self:applyHeroPrototype(hero, payload.heroId)
+    local overrideName = self.HERO_OVERRIDES[heroId]
+    if overrideName ~= nil and overrideName ~= "" then
+        PlayerResource:ReplaceHeroWith(playerId, overrideName, 0, 0)
     end
 end
 function OneShotGameMode.prototype.applyHeroPrototype(self, hero, heroId)
@@ -210,15 +211,15 @@ function OneShotGameMode.prototype.processRespawns(self)
         local playerId = ____value[1]
         local playerState = ____value[2]
         do
-            local __continue37
+            local __continue36
             repeat
                 if playerState.isAlive or playerState.respawnAt > now(nil) then
-                    __continue37 = true
+                    __continue36 = true
                     break
                 end
                 local hero = PlayerResource:GetSelectedHeroEntity(playerId)
                 if not hero then
-                    __continue37 = true
+                    __continue36 = true
                     break
                 end
                 playerState.isAlive = true
@@ -231,9 +232,9 @@ function OneShotGameMode.prototype.processRespawns(self)
                     true
                 )
                 syncPlayerState(nil, self.state, playerId)
-                __continue37 = true
+                __continue36 = true
             until true
-            if not __continue37 then
+            if not __continue36 then
                 break
             end
         end

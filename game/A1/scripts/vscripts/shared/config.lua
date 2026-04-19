@@ -16,7 +16,6 @@ ____exports.NET_TABLES = {
 }
 ____exports.EVENT_NAMES = {
     selectHero = "oss_select_hero",
-    fireProjectile = "oss_fire_projectile",
     interactPickup = "oss_interact_pickup",
     projectileFired = "oss_projectile_fired",
     projectileHit = "oss_projectile_hit",

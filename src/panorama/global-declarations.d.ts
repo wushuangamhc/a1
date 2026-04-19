@@ -1,6 +1,5 @@
 import {
   BlessingId,
-  FireProjectileRequest,
   HeroId,
   MapObjectState,
   MatchStateSnapshot,
@@ -21,7 +20,6 @@ import {
 declare global {
   interface CustomGameEventDeclarations {
     oss_select_hero: { heroId: HeroId };
-    oss_fire_projectile: FireProjectileRequest;
     oss_interact_pickup: { pickupId: string };
     oss_projectile_fired: ProjectileFiredEvent;
     oss_projectile_hit: ProjectileHitEvent;

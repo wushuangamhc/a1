@@ -8,7 +8,6 @@ import {
   getPlayerState,
   interactPickup,
   selectHero,
-  sendFireRequest,
   useTeleport
 } from "@panorama/utils/net";
 
@@ -30,23 +29,6 @@ function useNetTableState<T>(reader: () => T | undefined, initial: T): T {
   }, []);
 
   return value;
-}
-
-function getAimPoint(): { x: number; y: number; z: number } {
-  const cursor = GameUI.GetCursorPosition();
-  const worldPosition = GameUI.GetScreenWorldPosition(cursor);
-  if (worldPosition) {
-    return { x: worldPosition[0], y: worldPosition[1], z: worldPosition[2] };
-  }
-
-  const portraitUnit = Players.GetPlayerHeroEntityIndex(getLocalPlayerId());
-  const origin = Entities.GetAbsOrigin(portraitUnit);
-  const forward = Entities.GetForward(portraitUnit);
-  return {
-    x: origin[0] + forward[0] * 700,
-    y: origin[1] + forward[1] * 700,
-    z: origin[2]
-  };
 }
 
 const DIFFICULTY_LABELS: Record<string, string> = {
@@ -152,33 +134,6 @@ function App(): React.ReactElement {
     setConfirmed(true);
     selectHero(selectedHero);
   };
-
-  const onFire = (chargePct = 0): void => {
-    const target = getAimPoint();
-    sendFireRequest({ targetX: target.x, targetY: target.y, targetZ: target.z, chargePct });
-  };
-
-  // Listen for mouse click to fire (left click = fire)
-  React.useEffect(() => {
-    const onClick = (): void => {
-      if (snapshot?.phase !== "in_progress") return;
-      if (!playerState?.isAlive) return;
-      onFire(0);
-    };
-
-    const onRightClick = (): void => {
-      // Right click could be used for charged shot in future
-    };
-
-    // Register mouse listener using panorama event
-    $.RegisterForUnhandledEvent("DOTAShowAbilityTooltip", () => {}); // placeholder
-
-    // For mouse click firing, we use a panel that covers the screen with hittest=false
-    // The actual click handling is done via the ActionCard debug button for now
-    // In a full implementation, we'd hook into the game's input system
-
-    return () => {};
-  }, [snapshot?.phase, playerState?.isAlive]);
 
   // Listen for projectile fired events (client-side visual effect)
   React.useEffect(() => {
@@ -324,7 +279,6 @@ function App(): React.ReactElement {
       <Panel id="ActionCard">
         <Label className="CardHeading" text="操作" />
         <Panel className="ButtonRow">
-          <TextButton className="ActionButton" onactivate={() => onFire(0)} text="发射 (左键)" />
           <TextButton className="ActionButton" onactivate={() => interactPickup("oss_blessing_shrine_shield")} text="护盾祝福" />
           <TextButton className="ActionButton" onactivate={() => interactPickup("oss_rune_spawn_haste")} text="极速神符" />
           <TextButton className="ActionButton" onactivate={() => useTeleport("oss_teleport_1")} text="传送门" />

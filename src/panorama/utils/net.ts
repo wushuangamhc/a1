@@ -1,5 +1,5 @@
 import { EVENT_NAMES, NET_TABLES } from "@shared/config";
-import { FireProjectileRequest, HeroId, MatchStateSnapshot, PlayerCombatState, ScoreboardEntry } from "@shared/types";
+import { HeroId, MatchStateSnapshot, PlayerCombatState, ScoreboardEntry } from "@shared/types";
 
 export function getLocalPlayerId(): PlayerID {
   return Game.GetLocalPlayerID() as PlayerID;
@@ -25,10 +25,6 @@ export function getMatchSnapshot(): MatchStateSnapshot | undefined {
 
 export function selectHero(heroId: HeroId): void {
   GameEvents.SendCustomGameEventToServer(EVENT_NAMES.selectHero, { heroId });
-}
-
-export function sendFireRequest(request: FireProjectileRequest): void {
-  GameEvents.SendCustomGameEventToServer(EVENT_NAMES.fireProjectile, request);
 }
 
 export function interactPickup(pickupId: string): void {
