@@ -6,8 +6,9 @@ declare global {
   }
 }
 
-if (!GameRules.OneShotGameMode) {
-  GameRules.OneShotGameMode = new OneShotGameMode();
+function Activate() {
+  if (!GameRules.OneShotGameMode) {
+    GameRules.OneShotGameMode = new OneShotGameMode();
+  }
+  GameRules.OneShotGameMode.init();
 }
-
-GameRules.OneShotGameMode.init();
