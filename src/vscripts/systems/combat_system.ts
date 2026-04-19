@@ -45,10 +45,30 @@ export class CombatSystem {
     };
     CustomGameEventManager.Send_ServerToAllClients(EVENT_NAMES.projectileFired, firedEvent);
 
+    if (heroDefinition.projectileType === "converging_arc") {
+      const targetPoint = Vector(payload.targetX, payload.targetY, payload.targetZ);
+      const distance = ((origin as any) - (targetPoint as any) as Vector).Length();
+      const speed = 1600;
+      const delay = distance / speed;
+      const radius = heroDefinition.convergeRadius ?? 150;
+      schedule(delay, () => {
+        this.resolveConvergingArcHit(playerId, targetPoint, radius);
+      });
+      return;
+    }
+
+    let fireOrigin = origin;
+    if (heroDefinition.projectileType === "roll_shot") {
+      const rollDistance = 300;
+      const rollDestination = (origin as any) + (direction as any) * rollDistance;
+      FindClearSpaceForUnit(hero, rollDestination, true);
+      fireOrigin = hero.GetAbsOrigin();
+    }
+
     const shots = player.multishotCount;
     for (let shotIndex = 0; shotIndex < shots; shotIndex += 1) {
       const sideOffset = shots > 1 ? (shotIndex === 0 ? -48 : 48) : 0;
-      const adjustedOrigin = (origin as any) + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0);
+      const adjustedOrigin = (fireOrigin as any) + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0);
       this.resolveLineHit(playerId, adjustedOrigin, direction, range, heroDefinition.projectileWidth);
 
       if (heroDefinition.projectileType === "returning_line") {
@@ -146,5 +166,36 @@ export class CombatSystem {
     }
 
     this.registerKill(attackerId, victimId, HERO_DEFINITIONS[player.heroId].projectileType);
+  }
+
+  private resolveConvergingArcHit(
+    attackerId: PlayerID,
+    targetPoint: Vector,
+    radius: number
+  ): void {
+    const attackerTeam = PlayerResource.GetTeam(attackerId);
+    const enemies = FindUnitsInRadius(
+      attackerTeam,
+      targetPoint,
+      undefined,
+      radius,
+      UnitTargetTeam.ENEMY,
+      UnitTargetType.HERO,
+      UnitTargetFlags.FOW_VISIBLE + UnitTargetFlags.NO_INVIS,
+      FindOrder.ANY,
+      false
+    );
+
+    const victim = enemies[0];
+    if (!victim) {
+      return;
+    }
+
+    const victimId = victim.GetPlayerOwnerID();
+    if (victimId === undefined || victimId < 0) {
+      return;
+    }
+
+    this.registerKill(attackerId, victimId, "converging_arc");
   }
 }

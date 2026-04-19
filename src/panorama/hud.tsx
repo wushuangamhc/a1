@@ -186,6 +186,35 @@ function App(): React.ReactElement {
       const origin = [event.origin_x, event.origin_y, event.origin_z];
       const target = [event.target_x, event.target_y, event.target_z];
 
+      if (event.projectile_type === "converging_arc") {
+        const ox = event.origin_x;
+        const oy = event.origin_y;
+        const tx = event.target_x;
+        const ty = event.target_y;
+        const dx = tx - ox;
+        const dy = ty - oy;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const nx = (-dy / dist) * 80;
+        const ny = (dx / dist) * 80;
+        const leftOrigin = [ox + nx, oy + ny, event.origin_z];
+        const rightOrigin = [ox - nx, oy - ny, event.origin_z];
+
+        [leftOrigin, rightOrigin].forEach((o) => {
+          const particleId = Particles.CreateParticle(
+            "particles/ui_mouseactions/range_finder_cone.vpcf",
+            ParticleAttachment_t.PATTACH_WORLDORIGIN,
+            undefined as any
+          );
+          Particles.SetParticleControl(particleId, 0, o as [number, number, number]);
+          Particles.SetParticleControl(particleId, 1, target as [number, number, number]);
+          Particles.SetParticleControl(particleId, 2, [255, 100, 200]);
+          $.Schedule(0.2, () => {
+            Particles.DestroyParticleEffect(particleId, true);
+          });
+        });
+        return;
+      }
+
       // Create a simple particle line effect
       const particleId = Particles.CreateParticle(
         "particles/ui_mouseactions/range_finder_cone.vpcf",

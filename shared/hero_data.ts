@@ -36,5 +36,28 @@ export const HERO_DEFINITIONS: Record<HeroId, HeroDefinition> = {
     projectileWidth: 128,
     cooldown: 1.0,
     returnWidthMultiplier: 1.2
+  },
+  arc_mage: {
+    id: "arc_mage",
+    displayName: "Arc Mage",
+    displayNameCn: "干将莫邪",
+    description: "弧线双剑，从两侧汇聚到交汇点判定范围伤害。",
+    difficulty: "high",
+    projectileType: "converging_arc" as ProjectileType,
+    maxRange: 1200,
+    projectileWidth: 150,
+    cooldown: 1.1,
+    convergeRadius: 150
+  },
+  roller: {
+    id: "roller",
+    displayName: "Roller",
+    displayNameCn: "孙尚香",
+    description: "向鼠标方向翻滚后发射直线子弹。",
+    difficulty: "medium",
+    projectileType: "roll_shot" as ProjectileType,
+    maxRange: 1000,
+    projectileWidth: 96,
+    cooldown: 0.9
   }
 };
