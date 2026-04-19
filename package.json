@@ -7,7 +7,10 @@
     "build": "npm run build:game && npm run build:panorama",
     "build:game": "tstl -p tsconfig.game.json && node scripts/post-build.js",
     "build:panorama": "webpack --config webpack.panorama.config.js",
-    "typecheck": "tsc -p tsconfig.game.json --noEmit && tsc -p tsconfig.panorama.json --noEmit"
+    "typecheck": "tsc -p tsconfig.game.json --noEmit && tsc -p tsconfig.panorama.json --noEmit",
+    "watch:game": "nodemon --watch src/vscripts --watch shared --ext ts --exec \"npm run build:game\"",
+    "watch:panorama": "nodemon --watch src/panorama --watch shared --ext tsx,ts --exec \"npm run build:panorama\"",
+    "watch": "npm run watch:game & npm run watch:panorama"
   },
   "dependencies": {
     "react": "^17.0.0",
@@ -17,6 +20,7 @@
     "@moddota/dota-lua-types": "^4.38.1",
     "@moddota/panorama-types": "^1.39.1",
     "@types/react": "^17.0.91",
+    "nodemon": "^3.1.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.8.3",
     "typescript-to-lua": "^1.28.0",
