@@ -42,7 +42,7 @@ export class OneShotGameMode {
     });
     CustomGameEventManager.RegisterListener(EVENT_NAMES.teleportUsed, (_, payload) => {
       const playerId = payload.PlayerID as PlayerID;
-      if (payload.sourceId) {
+      if (payload.sourceId !== undefined && payload.sourceId !== "") {
         this.map.useTeleport(playerId, payload.sourceId);
       }
     });
@@ -64,13 +64,13 @@ export class OneShotGameMode {
 
   private onRulesStateChange(): void {
     const state = GameRules.State_Get();
-    if (state === DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME) {
+    if (state === GameState.PRE_GAME) {
       this.state.phase = "pregame";
       syncScoreboard(this.state);
       return;
     }
 
-    if (state === DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS) {
+    if (state === GameState.GAME_IN_PROGRESS) {
       this.state.start(this.defaultMode);
       syncScoreboard(this.state);
     }
@@ -141,11 +141,10 @@ export class OneShotGameMode {
     const definition = HERO_DEFINITIONS[heroId];
     hero.SetCustomDeathXP(0);
     hero.SetAbilityPoints(0);
-    hero.SetAttackCapability(AttackCapability.DOTA_UNIT_CAP_NO_ATTACK);
+    hero.SetAttackCapability(UnitAttackCapability.NO_ATTACK);
     hero.SetAcquisitionRange(0);
     hero.SetBaseMoveSpeed(300);
     hero.SetModelScale(0.98);
-    hero.SetUnitLabel(definition.displayName);
   }
 
   private processRespawns(): void {
@@ -213,7 +212,7 @@ export class OneShotGameMode {
   }
 
   private filterOrders(event: ExecuteOrderFilterEvent): boolean {
-    if (event.order_type === dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_MOVE || event.order_type === dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_TARGET) {
+    if (event.order_type === UnitOrder.ATTACK_MOVE || event.order_type === UnitOrder.ATTACK_TARGET) {
       return false;
     }
     return true;

@@ -1,0 +1,14 @@
+"AddonInfo"
+{
+	"addon_name"		"1shot1kill"
+	"addon_game_name"		"一击必杀"
+	"addon_title"		"One Shot One Kill"
+	"addon_version"		"0.1.0"
+	"addon_author"		"1shot1kill team"
+	"addon_content"		""
+	"addon_description"		"A fast-paced one-hit-kill shooter arena custom game for Dota 2."
+	"addon_team_count"		"2"
+	"addon_players_per_team"		"5"
+	"addon_preview_image"		""
+	"addon_url"		""
+}

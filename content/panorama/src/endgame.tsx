@@ -1,4 +1,5 @@
 import * as React from "react";
+import { render } from "react-panorama";
 import { MatchStateSnapshot } from "@shared/types";
 import { getMatchSnapshot } from "@panorama/utils/net";
 
@@ -46,5 +47,5 @@ $.RegisterForUnhandledEvent("DOTAHudReady", () => {
     return;
   }
 
-  React.render(<EndgameApp />, root);
+  render(<EndgameApp />, root);
 });

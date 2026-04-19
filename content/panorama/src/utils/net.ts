@@ -6,19 +6,21 @@ export function getLocalPlayerId(): PlayerID {
 }
 
 export function getPlayerState(playerId: PlayerID): PlayerCombatState | undefined {
-  return CustomNetTables.GetTableValue(NET_TABLES.playerState, `${playerId}`) as PlayerCombatState | undefined;
+  const value = CustomNetTables.GetTableValue(NET_TABLES.playerState, `${playerId}`);
+  return value === null ? undefined : (value as unknown as PlayerCombatState);
 }
 
 export function getScoreboardEntries(): ScoreboardEntry[] {
-  const raw = CustomNetTables.GetTableValue(NET_TABLES.matchState, "scoreboard") as Record<string, ScoreboardEntry> | undefined;
+  const raw = CustomNetTables.GetTableValue(NET_TABLES.matchState, "scoreboard");
   if (!raw) {
     return [];
   }
-  return Object.keys(raw).map((key) => raw[key]).sort((a, b) => b.kills - a.kills);
+  return Object.keys(raw).map((key) => (raw as unknown as Record<string, ScoreboardEntry>)[key]).sort((a, b) => b.kills - a.kills);
 }
 
 export function getMatchSnapshot(): MatchStateSnapshot | undefined {
-  return CustomNetTables.GetTableValue(NET_TABLES.matchState, "snapshot") as MatchStateSnapshot | undefined;
+  const value = CustomNetTables.GetTableValue(NET_TABLES.matchState, "snapshot");
+  return value === null ? undefined : (value as unknown as MatchStateSnapshot);
 }
 
 export function selectHero(heroId: HeroId): void {

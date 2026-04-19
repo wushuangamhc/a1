@@ -12,7 +12,8 @@
   },
   "include": [
     "game/**/*.ts",
-    "shared/**/*.ts"
+    "shared/**/*.ts",
+    "node_modules/@moddota/dota-lua-types/normalized.d.ts"
   ],
   "tstl": {
     "luaTarget": "5.1",

@@ -16,6 +16,7 @@
   "devDependencies": {
     "@moddota/dota-lua-types": "^4.38.1",
     "@moddota/panorama-types": "^1.39.1",
+    "@types/react": "^17.0.91",
     "ts-loader": "^9.5.1",
     "typescript": "^5.8.3",
     "typescript-to-lua": "^1.28.0",

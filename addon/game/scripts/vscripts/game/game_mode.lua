@@ -82,7 +82,7 @@ function OneShotGameMode.prototype.init(self)
         EVENT_NAMES.teleportUsed,
         function(_, payload)
             local playerId = payload.PlayerID
-            if payload.sourceId then
+            if payload.sourceId ~= nil and payload.sourceId ~= "" then
                 self.map:useTeleport(playerId, payload.sourceId)
             end
         end
@@ -105,12 +105,12 @@ function OneShotGameMode.prototype.tick(self)
 end
 function OneShotGameMode.prototype.onRulesStateChange(self)
     local state = GameRules:State_Get()
-    if state == DOTA_GAMERULES_STATE_PRE_GAME then
+    if state == 8 then
         self.state.phase = "pregame"
         syncScoreboard(nil, self.state)
         return
     end
-    if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+    if state == 10 then
         self.state:start(self.defaultMode)
         syncScoreboard(nil, self.state)
     end
@@ -173,11 +173,10 @@ function OneShotGameMode.prototype.applyHeroPrototype(self, hero, heroId)
     local definition = HERO_DEFINITIONS[heroId]
     hero:SetCustomDeathXP(0)
     hero:SetAbilityPoints(0)
-    hero:SetAttackCapability(AttackCapability.DOTA_UNIT_CAP_NO_ATTACK)
+    hero:SetAttackCapability(0)
     hero:SetAcquisitionRange(0)
     hero:SetBaseMoveSpeed(300)
     hero:SetModelScale(0.98)
-    hero:SetUnitLabel(definition.displayName)
 end
 function OneShotGameMode.prototype.processRespawns(self)
     for ____, ____value in __TS__Iterator(self.state.players) do
@@ -261,7 +260,7 @@ function OneShotGameMode.prototype.findSpawnPoint(self, playerId)
     return fallback + RandomVector(RandomInt(80, 280))
 end
 function OneShotGameMode.prototype.filterOrders(self, event)
-    if event.order_type == DOTA_UNIT_ORDER_ATTACK_MOVE or event.order_type == DOTA_UNIT_ORDER_ATTACK_TARGET then
+    if event.order_type == 3 or event.order_type == 4 then
         return false
     end
     return true

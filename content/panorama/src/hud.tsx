@@ -1,4 +1,5 @@
 import * as React from "react";
+import { render } from "react-panorama";
 import { HERO_IDS, HeroId, MatchStateSnapshot, PlayerCombatState } from "@shared/types";
 import { getLocalPlayerId, getMatchSnapshot, getPlayerState, interactPickup, selectHero, sendFireRequest, useTeleport } from "@panorama/utils/net";
 
@@ -122,5 +123,5 @@ $.RegisterForUnhandledEvent("DOTAHudReady", () => {
     return;
   }
 
-  React.render(<App />, root);
+  render(<App />, root);
 });

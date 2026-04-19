@@ -1,4 +1,5 @@
 import * as React from "react";
+import { render } from "react-panorama";
 import { ScoreboardEntry } from "@shared/types";
 import { getScoreboardEntries } from "@panorama/utils/net";
 
@@ -48,5 +49,5 @@ $.RegisterForUnhandledEvent("DOTAHudReady", () => {
     return;
   }
 
-  React.render(<ScoreboardApp />, root);
+  render(<ScoreboardApp />, root);
 });

@@ -48,13 +48,13 @@ export class CombatSystem {
     const shots = player.multishotCount;
     for (let shotIndex = 0; shotIndex < shots; shotIndex += 1) {
       const sideOffset = shots > 1 ? (shotIndex === 0 ? -48 : 48) : 0;
-      const adjustedOrigin = origin + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0 as never);
+      const adjustedOrigin = (origin as any) + Vector(-direction.y * sideOffset, direction.x * sideOffset, 0);
       this.resolveLineHit(playerId, adjustedOrigin, direction, range, heroDefinition.projectileWidth);
 
       if (heroDefinition.projectileType === "returning_line") {
         const returnWidth = heroDefinition.projectileWidth * (heroDefinition.returnWidthMultiplier ?? 1);
         schedule(0.25, () => {
-          this.resolveLineHit(playerId, adjustedOrigin + direction * range, direction * -1 as never, range, returnWidth);
+          this.resolveLineHit(playerId, (adjustedOrigin as any) + (direction as any) * range, ((direction as any) * -1) as Vector, range, returnWidth);
         });
       }
     }
@@ -117,7 +117,7 @@ export class CombatSystem {
     range: number,
     width: number
   ): void {
-    const destination = origin + direction * range;
+    const destination = (origin as any) + (direction as any) * range;
     const attackerTeam = PlayerResource.GetTeam(attackerId);
     const enemies = FindUnitsInLine(
       attackerTeam,

@@ -123,9 +123,9 @@ function CombatSystem.prototype.resolveLineHit(self, attackerId, origin, directi
         destination,
         nil,
         width,
-        UnitTargetTeam.ENEMY,
-        UnitTargetType.HERO,
-        UnitTargetFlags.FOW_VISIBLE + UnitTargetFlags.NO_INVIS
+        2,
+        1,
+        128 + 256
     )
     local victim = enemies[1]
     if not victim then
