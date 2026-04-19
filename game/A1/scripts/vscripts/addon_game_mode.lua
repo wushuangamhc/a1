@@ -15,4 +15,5 @@ local function Activate(self)
     end
     GameRules.OneShotGameMode:init()
 end
+_G.Activate = Activate
 return ____exports

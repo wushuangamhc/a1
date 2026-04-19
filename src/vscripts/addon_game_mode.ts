@@ -12,3 +12,6 @@ function Activate() {
   }
   GameRules.OneShotGameMode.init();
 }
+
+// Dota 2 engine requires Activate to be a global function in addon_game_mode.lua
+(_G as any).Activate = Activate;
