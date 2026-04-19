@@ -16,7 +16,7 @@
   ],
   "tstl": {
     "luaTarget": "5.1",
-    "luaLibImport": "none",
+    "luaLibImport": "inline",
     "noHeader": false
   }
 }
