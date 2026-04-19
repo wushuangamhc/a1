@@ -1,3 +1,18 @@
+export interface HeroDefinition {
+  id: HeroId;
+  displayName: string;
+  displayNameCn: string;
+  description: string;
+  difficulty: "low" | "medium" | "high" | "extreme";
+  projectileType: ProjectileType;
+  maxRange: number;
+  projectileWidth: number;
+  cooldown: number;
+  maxChargeTime?: number;
+  chargeRangeBonusPct?: number;
+  returnWidthMultiplier?: number;
+}
+
 export const HERO_IDS = ["striker", "deadeye", "boomerang"] as const;
 export type HeroId = (typeof HERO_IDS)[number];
 

@@ -30,6 +30,8 @@ function OneShotGameMode.prototype.____constructor(self)
     self.combat = __TS__New(CombatSystem, self.state, self.pickups)
     self.map = __TS__New(MapSystem, self.state)
     self.defaultMode = "ffa"
+    self.confirmedHeroSelection = __TS__New(Set)
+    self.gameStarted = false
 end
 function OneShotGameMode.prototype.init(self)
     GameRules:SetHeroRespawnEnabled(false)
@@ -100,6 +102,7 @@ function OneShotGameMode.prototype.tick(self)
     self.pickups:tick()
     self.map:tick()
     self:processRespawns()
+    self:checkAllHeroesSelected()
     self:checkMatchEnd()
     syncScoreboard(nil, self.state)
 end
@@ -110,7 +113,30 @@ function OneShotGameMode.prototype.onRulesStateChange(self)
         syncScoreboard(nil, self.state)
         return
     end
-    if state == 10 then
+    if state == 10 and not self.gameStarted then
+        self:checkAllHeroesSelected()
+    end
+end
+function OneShotGameMode.prototype.checkAllHeroesSelected(self)
+    if self.gameStarted or self.state.phase == "post_game" then
+        return
+    end
+    local playerCount = PlayerResource:GetPlayerCountForTeam(2) + PlayerResource:GetPlayerCountForTeam(3)
+    if playerCount == 0 then
+        return
+    end
+    local connectedPlayers = 0
+    do
+        local i = 0
+        while i < playerCount do
+            if PlayerResource:GetPlayer(i) ~= nil then
+                connectedPlayers = connectedPlayers + 1
+            end
+            i = i + 1
+        end
+    end
+    if connectedPlayers > 0 and self.confirmedHeroSelection.size >= connectedPlayers then
+        self.gameStarted = true
         self.state:start(self.defaultMode)
         syncScoreboard(nil, self.state)
     end
@@ -164,6 +190,7 @@ function OneShotGameMode.prototype.onHeroSelected(self, payload)
     local team = PlayerResource:GetTeam(playerId)
     local playerState = self.state:ensurePlayer(playerId, team)
     playerState.heroId = payload.heroId
+    self.confirmedHeroSelection:add(playerId)
     syncPlayerState(nil, self.state, playerId)
     if hero then
         self:applyHeroPrototype(hero, payload.heroId)
@@ -183,15 +210,15 @@ function OneShotGameMode.prototype.processRespawns(self)
         local playerId = ____value[1]
         local playerState = ____value[2]
         do
-            local __continue30
+            local __continue37
             repeat
                 if playerState.isAlive or playerState.respawnAt > now(nil) then
-                    __continue30 = true
+                    __continue37 = true
                     break
                 end
                 local hero = PlayerResource:GetSelectedHeroEntity(playerId)
                 if not hero then
-                    __continue30 = true
+                    __continue37 = true
                     break
                 end
                 playerState.isAlive = true
@@ -204,9 +231,9 @@ function OneShotGameMode.prototype.processRespawns(self)
                     true
                 )
                 syncPlayerState(nil, self.state, playerId)
-                __continue30 = true
+                __continue37 = true
             until true
-            if not __continue30 then
+            if not __continue37 then
                 break
             end
         end

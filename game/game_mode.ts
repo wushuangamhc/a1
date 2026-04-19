@@ -14,6 +14,8 @@ export class OneShotGameMode {
   private readonly combat = new CombatSystem(this.state, this.pickups);
   private readonly map = new MapSystem(this.state);
   private readonly defaultMode: MatchMode = "ffa";
+  private readonly confirmedHeroSelection = new Set<PlayerID>();
+  private gameStarted = false;
 
   init(): void {
     GameRules.SetHeroRespawnEnabled(false);
@@ -58,6 +60,7 @@ export class OneShotGameMode {
     this.pickups.tick();
     this.map.tick();
     this.processRespawns();
+    this.checkAllHeroesSelected();
     this.checkMatchEnd();
     syncScoreboard(this.state);
   }
@@ -70,7 +73,32 @@ export class OneShotGameMode {
       return;
     }
 
-    if (state === GameState.GAME_IN_PROGRESS) {
+    if (state === GameState.GAME_IN_PROGRESS && !this.gameStarted) {
+      // Wait for hero selections before actually starting
+      this.checkAllHeroesSelected();
+    }
+  }
+
+  private checkAllHeroesSelected(): void {
+    if (this.gameStarted || this.state.phase === "post_game") {
+      return;
+    }
+
+    const playerCount = PlayerResource.GetPlayerCountForTeam(DotaTeam.GOODGUYS) +
+      PlayerResource.GetPlayerCountForTeam(DotaTeam.BADGUYS);
+    if (playerCount === 0) {
+      return;
+    }
+
+    let connectedPlayers = 0;
+    for (let i = 0; i < playerCount; i++) {
+      if (PlayerResource.GetPlayer(i as PlayerID) !== undefined) {
+        connectedPlayers++;
+      }
+    }
+
+    if (connectedPlayers > 0 && this.confirmedHeroSelection.size >= connectedPlayers) {
+      this.gameStarted = true;
       this.state.start(this.defaultMode);
       syncScoreboard(this.state);
     }
@@ -130,6 +158,7 @@ export class OneShotGameMode {
     const team = PlayerResource.GetTeam(playerId);
     const playerState = this.state.ensurePlayer(playerId, team);
     playerState.heroId = payload.heroId;
+    this.confirmedHeroSelection.add(playerId);
     syncPlayerState(this.state, playerId);
 
     if (hero) {
