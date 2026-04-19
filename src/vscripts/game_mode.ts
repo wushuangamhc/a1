@@ -119,9 +119,6 @@ export class OneShotGameMode {
     const playerState = this.state.ensurePlayer(playerId, unit.GetTeam());
     this.applyHeroPrototype(unit, playerState.heroId);
 
-    // Camera auto-follow: lock camera to local hero (Dota engine handles map borders)
-    PlayerResource.SetCameraTarget(playerId, unit);
-
     unit.SetBaseMaxHealth(1);
     unit.SetMaxHealth(1);
     unit.SetHealth(1);

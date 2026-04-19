@@ -10,6 +10,7 @@ import {
   selectHero,
   useTeleport
 } from "@panorama/utils/net";
+import { startCameraFollow } from "@panorama/utils/camera";
 
 function useNetTableState<T>(reader: () => T | undefined, initial: T): T {
   const [value, setValue] = React.useState<T>(initial);
@@ -123,6 +124,11 @@ function App(): React.ReactElement {
   const [selectedHero, setSelectedHero] = React.useState<HeroId | undefined>(undefined);
   const [confirmed, setConfirmed] = React.useState(false);
   const [killFeed, setKillFeed] = React.useState<Array<{ attackerName: string; victimName: string; heroName: string }>>([]);
+
+  // Start camera auto-follow on HUD ready
+  React.useEffect(() => {
+    startCameraFollow();
+  }, []);
 
   const handleSelectHero = (heroId: HeroId): void => {
     setSelectedHero(heroId);
