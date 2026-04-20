@@ -114,9 +114,9 @@ function CombatSystem.prototype.resolveLineHit(self, attackerId, origin, directi
         destination,
         nil,
         width,
-        2,
-        1,
-        128 + 256
+        DOTA_UNIT_TARGET_TEAM_ENEMY,
+        DOTA_UNIT_TARGET_HERO,
+        DOTA_UNIT_TARGET_FLAG_FOW_VISIBLE + DOTA_UNIT_TARGET_FLAG_NO_INVIS
     )
     local victim = enemies[1]
     if not victim then

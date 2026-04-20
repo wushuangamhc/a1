@@ -118,9 +118,9 @@ export class CombatSystem {
       destination,
       undefined,
       width,
-      UnitTargetTeam.ENEMY,
-      UnitTargetType.HERO,
-      UnitTargetFlags.FOW_VISIBLE + UnitTargetFlags.NO_INVIS
+      DOTA_UNIT_TARGET_TEAM.DOTA_UNIT_TARGET_TEAM_ENEMY,
+      DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_HERO,
+      DOTA_UNIT_TARGET_FLAGS.DOTA_UNIT_TARGET_FLAG_FOW_VISIBLE + DOTA_UNIT_TARGET_FLAGS.DOTA_UNIT_TARGET_FLAG_NO_INVIS
     );
 
     const victim = enemies[0];

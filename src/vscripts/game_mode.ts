@@ -68,13 +68,13 @@ export class OneShotGameMode {
 
   private onRulesStateChange(): void {
     const state = GameRules.State_Get();
-    if (state === GameState.PRE_GAME) {
+    if (state === DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME) {
       this.state.phase = "pregame";
       syncScoreboard(this.state);
       return;
     }
 
-    if (state === GameState.GAME_IN_PROGRESS && !this.gameStarted) {
+    if (state === DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS && !this.gameStarted) {
       // Wait for hero selections before actually starting
       this.checkAllHeroesSelected();
     }
@@ -85,8 +85,8 @@ export class OneShotGameMode {
       return;
     }
 
-    const playerCount = PlayerResource.GetPlayerCountForTeam(DotaTeam.GOODGUYS) +
-      PlayerResource.GetPlayerCountForTeam(DotaTeam.BADGUYS);
+    const playerCount = PlayerResource.GetPlayerCountForTeam(DOTATeam_t.DOTA_TEAM_GOODGUYS) +
+      PlayerResource.GetPlayerCountForTeam(DOTATeam_t.DOTA_TEAM_BADGUYS);
     if (playerCount === 0) {
       return;
     }
@@ -174,7 +174,7 @@ export class OneShotGameMode {
     const definition = HERO_DEFINITIONS[heroId];
     hero.SetCustomDeathXP(0);
     hero.SetAbilityPoints(0);
-    hero.SetAttackCapability(UnitAttackCapability.NO_ATTACK);
+    hero.SetAttackCapability(DOTAUnitAttackCapability_t.DOTA_UNIT_CAP_NO_ATTACK);
     hero.SetAcquisitionRange(0);
     hero.SetBaseMoveSpeed(300);
     hero.SetModelScale(0.98);
@@ -245,7 +245,7 @@ export class OneShotGameMode {
   }
 
   private filterOrders(event: ExecuteOrderFilterEvent): boolean {
-    if (event.order_type === UnitOrder.ATTACK_MOVE || event.order_type === UnitOrder.ATTACK_TARGET) {
+    if (event.order_type === dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_MOVE || event.order_type === dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_TARGET) {
       return false;
     }
     return true;

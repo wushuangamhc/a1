@@ -7,12 +7,13 @@
     "outDir": "game/A1/scripts/vscripts",
     "lib": [
       "ESNext"
-    ]
+    ],
+    "strictPropertyInitialization": false
   },
   "include": [
     "src/vscripts/**/*.ts",
     "shared/**/*.ts",
-    "node_modules/@moddota/dota-lua-types/normalized.d.ts"
+    "node_modules/@moddota/dota-lua-types/index.d.ts"
   ],
   "tstl": {
     "luaTarget": "5.1",

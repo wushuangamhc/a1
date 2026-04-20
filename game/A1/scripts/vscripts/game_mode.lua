@@ -364,12 +364,12 @@ function OneShotGameMode.prototype.tick(self)
 end
 function OneShotGameMode.prototype.onRulesStateChange(self)
     local state = GameRules:State_Get()
-    if state == 8 then
+    if state == DOTA_GAMERULES_STATE_PRE_GAME then
         self.state.phase = "pregame"
         syncScoreboard(nil, self.state)
         return
     end
-    if state == 10 and not self.gameStarted then
+    if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS and not self.gameStarted then
         self:checkAllHeroesSelected()
     end
 end
@@ -377,7 +377,7 @@ function OneShotGameMode.prototype.checkAllHeroesSelected(self)
     if self.gameStarted or self.state.phase == "post_game" then
         return
     end
-    local playerCount = PlayerResource:GetPlayerCountForTeam(2) + PlayerResource:GetPlayerCountForTeam(3)
+    local playerCount = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS) + PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_BADGUYS)
     if playerCount == 0 then
         return
     end
@@ -457,7 +457,7 @@ function OneShotGameMode.prototype.applyHeroPrototype(self, hero, heroId)
     local definition = HERO_DEFINITIONS[heroId]
     hero:SetCustomDeathXP(0)
     hero:SetAbilityPoints(0)
-    hero:SetAttackCapability(0)
+    hero:SetAttackCapability(DOTA_UNIT_CAP_NO_ATTACK)
     hero:SetAcquisitionRange(0)
     hero:SetBaseMoveSpeed(300)
     hero:SetModelScale(0.98)
@@ -544,7 +544,7 @@ function OneShotGameMode.prototype.findSpawnPoint(self, playerId)
     return fallback + RandomVector(RandomInt(80, 280))
 end
 function OneShotGameMode.prototype.filterOrders(self, event)
-    if event.order_type == 3 or event.order_type == 4 then
+    if event.order_type == DOTA_UNIT_ORDER_ATTACK_MOVE or event.order_type == DOTA_UNIT_ORDER_ATTACK_TARGET then
         return false
     end
     return true
